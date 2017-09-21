@@ -1,0 +1,19 @@
+{
+  "filename" : "0099.jpg",
+  "folder" : "out",
+  "image_w_h" : [
+    1368,
+    1096
+  ],
+  "objects" : [
+    {
+      "label" : "traffic_light-red",
+      "x_y_w_h" : [
+        670,
+        380,
+        43,
+        112
+      ]
+    }
+  ]
+}
