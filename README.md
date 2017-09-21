@@ -138,4 +138,4 @@ python export_inference_graph.py \
 11. launch jupyter notebook to test the model
 ```
 jupyter notebook object_detection.ipynb
-```
+``
