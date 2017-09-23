@@ -2,7 +2,7 @@
 
 
 ## Sources of information
-https://github.com/tensorflow/models/blob/master/object_detection/g3doc/running_pets.md
+https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_pets.md
 
 Running locally: https://github.com/tensorflow/models/blob/master/object_detection/g3doc/running_locally.md
  1. Install: https://github.com/tensorflow/models/blob/master/object_detection/g3doc/installation.md
@@ -33,6 +33,8 @@ export YOUR_GCS_BUCKET=udacity-traffic-lights
 5. Create the tf records
 
 ```
+cd traffic-lights_classifier
+
 python create_tf_record.py \
   --data_dir=rosbag_images \
   --output_dir=out \
@@ -41,10 +43,11 @@ python create_tf_record.py \
 
 
 6. Export tf records to the google cloud platform bucket:
-gsutil cp out/traffic-lights_train.record gs://${YOUR_GCS_BUCKET}/data/train.record
-gsutil cp out/traffic-lights_val.record gs://${YOUR_GCS_BUCKET}/data/val.record
-gsutil cp data/traffic-lights-label_map.pbtxt gs://${YOUR_GCS_BUCKET}/data/label_map.pbtxt
-
+```
+gsutil cp out/traffic-lights_train.record gs://${YOUR_GCS_BUCKET}/data/tl_train.record
+gsutil cp out/traffic-lights_val.record gs://${YOUR_GCS_BUCKET}/data/tl_val.record
+gsutil cp data/traffic-lights-label_map.pbtxt gs://${YOUR_GCS_BUCKET}/data/tl_label_map.pbtxt
+```
 
 7. Downloading a COCO-pretrained Model for Transfer Learning
 
@@ -66,7 +69,7 @@ tar -xvf faster_rcnn_resnet101_coco_11_06_2017.tar.gz
 gsutil cp faster_rcnn_resnet101_coco_11_06_2017/model.ckpt.* gs://${YOUR_GCS_BUCKET}/data/
 
 sed -i "s|PATH_TO_BE_CONFIGURED|"gs://${YOUR_GCS_BUCKET}"/data|g" \
-    config/faster_rcnn_resnet101_coco_11_06_2017.config
+    config/faster_rcnn_resnet101_tl.config
 
 gsutil cp config/faster_rcnn_resnet101_tl.config gs://${YOUR_GCS_BUCKET}/data/faster_rcnn_resnet101_tl.config
 
@@ -93,8 +96,6 @@ export YOUR_MODEL=faster_rcnn_resnet101_tl
 
 8. Train
 ```
-# From tensorflow/models/
-
 gcloud ml-engine jobs submit training `whoami`_object_detection_`date +%s` \
     --job-dir=gs://${YOUR_GCS_BUCKET}/train \
     --packages dist/object_detection-0.1.tar.gz,dist/slim-0.1.tar.gz \
@@ -121,17 +122,17 @@ gcloud ml-engine jobs submit training `whoami`_object_detection_eval_`date +%s` 
 
 9. Download the trained model
 ```
-# From tensorflow/models
 export CHECKPOINT_NUMBER=0
-gsutil cp gs://${YOUR_GCS_BUCKET}/train/model.ckpt-${CHECKPOINT_NUMBER}.* .
+mkdir train
+gsutil cp gs://${YOUR_GCS_BUCKET}/train/model.ckpt-${CHECKPOINT_NUMBER}.* ./train/
 ```
 
 10. Export the inference graph
 ```
 python export_inference_graph.py \
     --input_type image_tensor \
-    --pipeline_config_path config/ssd_mobilenet_v1_coco.config \
-    --trained_checkpoint_prefix model.ckpt-${CHECKPOINT_NUMBER} \
+    --pipeline_config_path config/${YOUR_MODEL}.config \
+    --trained_checkpoint_prefix ./train/model.ckpt-${CHECKPOINT_NUMBER} \
     --output_directory output_inference_graph.pb
 ```
 

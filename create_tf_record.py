@@ -60,11 +60,9 @@ def dict_to_tf_example(data,
     width, height = data['image_w_h'] # Image size
 
     xmins = [] # List of normalized left x coordinates in bounding box (1 per box)
-    xmaxs = [] # List of normalized right x coordinates in bounding box
-                # (1 per box)
+    xmaxs = [] # List of normalized right x coordinates in bounding box (1 per box)
     ymins = [] # List of normalized top y coordinates in bounding box (1 per box)
-    ymaxs = [] # List of normalized bottom y coordinates in bounding box
-                # (1 per box)
+    ymaxs = [] # List of normalized bottom y coordinates in bounding box (1 per box)
     classes_text = [] # List of string class name of bounding box (1 per box)
     classes = [] # List of integer class id of bounding box (1 per box)
 
@@ -95,13 +93,12 @@ def dict_to_tf_example(data,
     return example
 
 def create_tf_record(examples,
-                    label_map_dict,
-                    image_dir,
-                    output_path):
+                     label_map_dict,
+                     image_dir,
+                     output_path):
     writer = tf.python_io.TFRecordWriter(output_path)
-    counter = 0
     for idx,example in enumerate(examples):
-        if idx % 100 == 0:
+        if idx % 25 == 0:
             print('On image %d of %d' % (idx, len(examples)))
         with open(example) as data_file:
             tf_annotation = dict_to_tf_example(json.load(data_file), label_map_dict, image_dir)
