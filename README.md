@@ -87,7 +87,7 @@ python ../tensorflow-models/research/object_detection/eval.py \
     --checkpoint_dir=./train \
     --eval_dir=./eval
 
-tensorboard --logdir=${PATH_TO_MODEL_DIRECTORY}
+tensorboard --logdir=train
 
 ```
 
