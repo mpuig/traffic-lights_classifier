@@ -99,11 +99,6 @@ After your model has been trained, you should export it to a Tensorflow graph pr
 ```
 export CHECKPOINT_NUMBER=0
 
-# If using AWS, download from server
-scp -i "udacity.pem" ubuntu@ec2-34-240-221-165.eu-west-1.compute.amazonaws.com:/home/ubuntu/traffic-lights_classifier/model${CHECKPOINT_NUMBER}.tar.gz .
-
-tar zxvf model${CHECKPOINT_NUMBER}.tar.gz
-
 python export_inference_graph.py \
     --input_type image_tensor \
     --pipeline_config_path data/${YOUR_MODEL}.local.config \
