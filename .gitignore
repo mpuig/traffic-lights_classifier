@@ -101,7 +101,8 @@ ENV/
 .mypy_cache/
 
 *.gz
-ssd_mobilenet*
 faster_rcnn*
 output_inference_graph.pb
 train
+sim_training_data
+data/*.record

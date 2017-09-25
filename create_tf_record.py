@@ -22,7 +22,7 @@ from object_detection.utils import label_map_util
 flags = tf.app.flags
 flags.DEFINE_string('data_dir', '', 'Root directory to raw traffic lights dataset.')
 flags.DEFINE_string('output_dir', '', 'Path to directory to output TFRecords.')
-flags.DEFINE_string('label_map_path', 'data/traffic-lights_label_map.pbtxt',
+flags.DEFINE_string('label_map_path', 'data/tl_label_map.pbtxt',
                     'Path to label map proto')
 FLAGS = flags.FLAGS
 
@@ -125,8 +125,8 @@ def main(_):
     print('%d training and %d validation examples.' %
                (len(train_examples), len(val_examples)))
 
-    train_output_path = os.path.join(FLAGS.output_dir, 'traffic-lights_train.record')
-    val_output_path = os.path.join(FLAGS.output_dir, 'traffic-lights_val.record')
+    train_output_path = os.path.join(FLAGS.output_dir, 'tl_train.record')
+    val_output_path = os.path.join(FLAGS.output_dir, 'tl_val.record')
 
     create_tf_record(train_examples, label_map_dict, data_dir, train_output_path)
     create_tf_record(val_examples, label_map_dict, data_dir, val_output_path)
