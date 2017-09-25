@@ -15,7 +15,7 @@ import json
 import random
 
 # This is needed since the notebook is stored in the udacity folder.
-sys.path.append("..")
+# sys.path.append("..")
 from object_detection.utils import dataset_util
 from object_detection.utils import label_map_util
 

@@ -70,8 +70,8 @@ import tensorflow as tf
 from google.protobuf import text_format
 # This is needed since the notebook is stored in the udacity folder.
 import sys
-sys.path.append("..")
-sys.path.append("../slim")
+#sys.path.append("..")
+#sys.path.append("../slim")
 from object_detection import exporter
 from object_detection.protos import pipeline_pb2
 

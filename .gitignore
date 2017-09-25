@@ -106,3 +106,4 @@ output_inference_graph.pb
 train
 sim_training_data
 data/*.record
+*.pem
