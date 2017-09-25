@@ -65,14 +65,14 @@ A local training job can be run with the following command:
 
 ```
 mkdir train
-python ../tensorflow-models/research/object_detection/train.py \
+python ../models/research/object_detection/train.py \
     --logtostderr \
     --pipeline_config_path=data/${YOUR_MODEL}.local.config \
     --train_dir=./train
 
 
 mkdir eval
-python ../tensorflow-models/research/object_detection/eval.py \
+python ../models/research/object_detection/eval.py \
     --logtostderr \
     --pipeline_config_path=data/${YOUR_MODEL}.local.config \
     --checkpoint_dir=./train \

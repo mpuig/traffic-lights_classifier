@@ -101,7 +101,7 @@ ENV/
 .mypy_cache/
 
 *.gz
-faster_rcnn*
+faster_rcnn_resnet101_coco_11_06_2017
 output_inference_graph.pb
 train
 sim_training_data
