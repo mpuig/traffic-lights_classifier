@@ -8,14 +8,11 @@ Example usage:
 import PIL.Image
 import io
 import tensorflow as tf
-import sys
 import os
 import glob
 import json
 import random
 
-# This is needed since the notebook is stored in the udacity folder.
-# sys.path.append("..")
 from object_detection.utils import dataset_util
 from object_detection.utils import label_map_util
 
@@ -67,7 +64,10 @@ def dict_to_tf_example(data,
     classes = [] # List of integer class id of bounding box (1 per box)
 
     for box in data['objects']:
-        x,y,w,h = box['x_y_w_h']
+        x = box['x_y_w_h'][0] * 1.
+        y = box['x_y_w_h'][1] * 1.
+        w = box['x_y_w_h'][2] * 1.
+        h = box['x_y_w_h'][3] * 1.
         xmins.append(float(x / width))
         xmaxs.append(float((x + w) / width))
         ymins.append(float(y / height))

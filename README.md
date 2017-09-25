@@ -12,13 +12,22 @@ Running locally: https://github.com/tensorflow/models/blob/master/object_detecti
 
 ## Steps to install
 
-### 1. Clone the https://github.com/tensorflow/models
+### 1. Clone the Tensorflow/models repo
 
-### 2. Clone the https://github.com/mpuig/traffic-lights_classifier
+```
+git clone https://github.com/tensorflow/models tensorflow-models
+```
+
+### 2. Clone the Traffic Lights classifier repc
+
+```
+git clone https://github.com/mpuig/traffic-lights_classifier
+```
 
 ### 3. Setup environment
 
 The Tensorflow Object Detection API uses Protobufs to configure model and training parameters. Before the framework can be used, the Protobuf libraries must be compiled. This should be done by running the following command from the tensorflow/models/research/ directory:
+
 ```
 # From tensorflow/models/research/
 protoc object_detection/protos/*.proto --python_out=.
@@ -65,18 +74,20 @@ A local training job can be run with the following command:
 
 ```
 mkdir train
-python ../models/research/object_detection/train.py \
+python ../tensorflow-models/research/object_detection/train.py \
     --logtostderr \
     --pipeline_config_path=data/${YOUR_MODEL}.local.config \
     --train_dir=./train
 
 
 mkdir eval
-python ../models/research/object_detection/eval.py \
+python ../tensorflow-models/research/object_detection/eval.py \
     --logtostderr \
     --pipeline_config_path=data/${YOUR_MODEL}.local.config \
     --checkpoint_dir=./train \
     --eval_dir=./eval
+
+tensorboard --logdir=${PATH_TO_MODEL_DIRECTORY}
 
 ```
 
@@ -86,17 +97,25 @@ python ../models/research/object_detection/eval.py \
 After your model has been trained, you should export it to a Tensorflow graph proto:
 
 ```
-export CHECKPOINT_NUMBER=30
+export CHECKPOINT_NUMBER=0
+
+# If using AWS, download from server
+scp -i "udacity.pem" ubuntu@ec2-34-240-221-165.eu-west-1.compute.amazonaws.com:/home/ubuntu/traffic-lights_classifier/model${CHECKPOINT_NUMBER}.tar.gz .
+
+tar zxvf model${CHECKPOINT_NUMBER}.tar.gz
 
 python export_inference_graph.py \
     --input_type image_tensor \
     --pipeline_config_path data/${YOUR_MODEL}.local.config \
     --trained_checkpoint_prefix ./train/model.ckpt-${CHECKPOINT_NUMBER} \
-    --output_directory output_inference_graph.pb
+    --output_directory output_inference_graph-${CHECKPOINT_NUMBER}.pb
 ```
 Afterwards, you should see a graph named output_inference_graph.pb.
+
+
 
 ### 8. launch jupyter notebook to test the model
 ```
 jupyter notebook object_detection.ipynb
 ``
+
