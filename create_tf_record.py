@@ -64,10 +64,10 @@ def dict_to_tf_example(data,
     classes = [] # List of integer class id of bounding box (1 per box)
 
     for box in data['objects']:
-        x = box['x_y_w_h'][0] * 1.
-        y = box['x_y_w_h'][1] * 1.
-        w = box['x_y_w_h'][2] * 1.
-        h = box['x_y_w_h'][3] * 1.
+        x = float(box['x_y_w_h'][0])
+        y = float(box['x_y_w_h'][1])
+        w = float(box['x_y_w_h'][2])
+        h = float(box['x_y_w_h'][3])
         xmins.append(float(x / width))
         xmaxs.append(float((x + w) / width))
         ymins.append(float(y / height))
