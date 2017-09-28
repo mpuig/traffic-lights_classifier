@@ -12,6 +12,8 @@ import os
 import glob
 import json
 import random
+import datetime
+import shutil
 
 from object_detection.utils import dataset_util
 from object_detection.utils import label_map_util
@@ -105,6 +107,18 @@ def create_tf_record(examples,
         writer.write(tf_annotation.SerializeToString())
     writer.close()
 
+def set_image_directory(examples, image_dir, output_dir):
+    os.makedirs(output_dir)
+
+    for idx,example in enumerate(examples):
+        with open(example) as data_file:
+            data = json.load(data_file)
+        filename = data['filename']
+        img_src = os.path.join(image_dir, filename.replace("json", "jpg"))
+        img_dst = os.path.join(output_dir, filename.replace("json", "jpg"))
+        print(img_src)
+        shutil.copyfile(img_src, img_dst)
+
 
 def main(_):
     data_dir = FLAGS.data_dir
@@ -116,7 +130,7 @@ def main(_):
 
     # Test images are not included in the downloaded data set, so we shall perform
     # our own split.
-    random.seed(42)
+    random.seed()
     random.shuffle(examples_list)
     num_examples = len(examples_list)
     num_train = int(0.7 * num_examples)
@@ -130,6 +144,13 @@ def main(_):
 
     create_tf_record(train_examples, label_map_dict, data_dir, train_output_path)
     create_tf_record(val_examples, label_map_dict, data_dir, val_output_path)
+
+    code = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    train_output_dir = os.path.join(FLAGS.output_dir, code, 'train')
+    val_output_dir = os.path.join(FLAGS.output_dir, code, 'test')
+
+    set_image_directory(train_examples, data_dir, train_output_dir)
+    set_image_directory(val_examples, data_dir, val_output_dir)
 
 if __name__ == '__main__':
     tf.app.run()
