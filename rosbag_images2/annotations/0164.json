@@ -1,0 +1,19 @@
+{
+  "filename" : "0164.jpg",
+  "folder" : "rosbag_images2",
+  "image_w_h" : [
+    1368,
+    1096
+  ],
+  "objects" : [
+    {
+      "label" : "traffic_light-red",
+      "x_y_w_h" : [
+        326,
+        365,
+        69,
+        166
+      ]
+    }
+  ]
+}
